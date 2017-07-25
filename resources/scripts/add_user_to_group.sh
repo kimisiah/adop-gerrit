@@ -39,7 +39,8 @@ if [ -z "${admin_user}" ] || [ -z "${admin_password}" ] || [ -z "${user}" ] || [
 fi
 
 echo "Testing Gerrit Connection"
-until curl -sL -w "%{http_code}\\n" "http://localhost:8080/gerrit/" -o /dev/null | grep "200" &> /dev/null
+ until curl -sL -w "%{http_code}\\n" "http://localhost:8080/gerrit/" -o /dev/null | grep "200" &> /dev/null
+#until curl -sL -w "%{http_code}\\n" "http://localhost:8080/" -o /dev/null | grep "200" &> /dev/null
 do
     echo "Gerrit unavailable, sleeping for ${SLEEP_TIME}"
     sleep "${SLEEP_TIME}"
@@ -52,6 +53,7 @@ count=0
 until [ $count -ge ${MAX_RETRY} ]
 do
     ret=$(curl -X PUT -u "${admin_user}:${admin_password}" --write-out "%{http_code}\\n" --silent --output /dev/null "http://localhost:8080/gerrit/a/groups/${group}/members/${user}")
+    #ret=$(curl -X PUT -u "${admin_user}:${admin_password}" --write-out "%{http_code}\\n" --silent --output /dev/null "http://localhost:8080/a/groups/${group}/members/${user}")
     # | grep "200" &> /dev/null && break
     [[ ${ret} -eq 200  ]] && break
     count=$[$count+1]

@@ -8,6 +8,7 @@ set -e
 /var/gerrit/adop\_scripts/add\_user\_to\_group.sh -A ${GERRIT_USERNAME} -P ${GERRIT_PASSWORD} -u ${JENKINS_USERNAME} -g Administrators
 /var/gerrit/adop\_scripts/add\_user\_to\_group.sh -A ${GERRIT_USERNAME} -P ${GERRIT_PASSWORD} -u ${INITIAL_ADMIN_USER} -g "Administrators"
 
-/var/gerrit/adop\_scripts/upload_ssh_key.sh -c jenkins -p 8080 -A ${JENKINS_USERNAME} -P ${JENKINS_PASSWORD} -k id_rsa.pub -u self
-
+if $JENKINS_INTEGRATION; then
+  /var/gerrit/adop\_scripts/upload_ssh_key.sh -c jenkins -p 8080 -A ${JENKINS_USERNAME} -P ${JENKINS_PASSWORD} -k id_rsa.pub -u self
+fi
 exit 0
