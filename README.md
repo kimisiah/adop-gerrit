@@ -36,6 +36,20 @@ The following command will run adop-gerrit and connect it to MySQL and OpenLDAP
   -d accenture/adop-gerrit:VERSION
 ```
 
+## Enable SAML Gerrit Authentication
+Edit Environment Variable Values
+```
+  GERRIT_AUTHENTICATION=SAML
+```
+
+Additional variables values must also be updated accordingly:
+```
+  HTTPD_FILTERCLASS (Optional)
+  SAML_KEYSTORE_PASS
+  SAML_PRIVATE_KEY_PASS
+  SAML_METDATA_PATH
+```
+
 In addition all the LDAP attibutes defined in [Gerrit LDAP](https://gerrit-review.googlesource.com/Documentation/config-gerrit.html#ldap) are supported.
 
 # License
