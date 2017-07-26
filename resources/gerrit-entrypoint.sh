@@ -40,6 +40,10 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   [ -z "${AUTH_LOGOUTURL}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.logoutUrl "${AUTH_LOGOUTURL}"
   [ -z "${AUTH_TRUST_CONTAINER_AUTH}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.trustContainerAuth "${AUTH_TRUST_CONTAINER_AUTH}"
 
+  # Section SAML Condition for AUTH_TYPE
+  if [ "${GERRIT_AUTHENTICATION}" = 'SAML' ]; then 
+	git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.type "HTTP_LDAP"
+  fi
   #Section ldap
   if [ "${AUTH_TYPE}" = 'LDAP' ] || [ "${AUTH_TYPE}" = 'HTTP_LDAP' ]; then
     git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.type "${AUTH_TYPE}"
@@ -95,6 +99,27 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   #Section download
   [ -z "${DOWNLOAD_SCHEME}" ] || git config -f "${GERRIT_SITE}/etc/gerrit.config" download.scheme "${DOWNLOAD_SCHEME}"
 
+  if [ "${GERRIT_AUTHENTICATION}" = 'SAML' ]; then
+  
+    #HTTPD Section
+	# Please Edit HTTPD_LISTENURL to use https and port 8443
+    git config -f "${GERRIT_SITE}/etc/gerrit.config" httpd.filterClass "${HTTPD_FILTERCLASS}" # e.g. com.thesamet.gerrit.plugins.saml.SamlWebFilter
+    
+	#AUTH Section
+	# Please Edit AUTH_LOGOUTURL to use adfs logout e.g. https://fs.hc.sct/adfs/ls/?wa=wsignout1.0
+    git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.httpHeader "X-SAML-UserName"
+	git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.httpDisplaynameHeader "X-SAML-DisplayName"
+	git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.httpEmailHeader "X-SAML-EmailHeader"
+	git config -f "${GERRIT_SITE}/etc/gerrit.config" auth.httpExternalIdHeader "X-SAML-ExternalId"
+	
+	#SAML Section
+	git config -f "${GERRIT_SITE}/etc/gerrit.config" saml.keystorePath "${GERRIT_HOME}/samlKeystore.jks"
+    git config -f "${GERRIT_SITE}/etc/gerrit.config" saml.keystorePassword "${SAML_KEYSTORE_PASS}"
+	git config -f "${GERRIT_SITE}/etc/gerrit.config" saml.privateKeyPassword "${SAML_PRIVATE_KEY_PASS}"
+	git config -f "${GERRIT_SITE}/etc/gerrit.config" saml.metadataPath = "${SAML_METDATA_PATH}" # e.g. file:///home/gerrit/FederationMetadata.xml
+  
+  fi
+  
   echo "Upgrading gerrit..."
   java -jar "${GERRIT_WAR}" init --batch -d "${GERRIT_SITE}"
   if [ $? -eq 0 ]; then
