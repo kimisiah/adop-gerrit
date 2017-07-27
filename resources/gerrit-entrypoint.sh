@@ -1,10 +1,39 @@
 #!/bin/bash
 set -e
+
+function add_gitblit_plugin(){
+
+  # Build installMaven ANT target
+  cd /tmp
+  git clone https://github.com/gitblit/gitblit.git
+  cd gitblit && git checkout master
+  ant -DresourceFolderPrefix=static installMaven
+
+  # Add Gitbit plugins to Gitblit
+  cd /tmp
+  git clone https://gerrit.googlesource.com/gerrit
+  git clone https://gerrit.googlesource.com/plugins/gitblit
+  cd gerrit/plugins
+  ln -s ../../gitblit .
+  rm external_plugin_deps.bzl
+  ln -s gitblit/external_plugin_deps.bzl .
+  cd ../
+  
+  bazel build plugins/gitblit
+  # Output jar is in: bazel-genfiles/plugins/gitblit/gitblit.jar
+  
+}
+
 #Initialize gerrit if gerrit site dir is empty.
 #This is necessary when gerrit site is in a volume.
 if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   if [ -z "$(ls -A "$GERRIT_SITE")" ]; then
     echo "First time initialize gerrit..."
+	GERRIT_PWD=`echo ${PWD}`
+	if GITBIT_PLUGIN_ENABLED; then
+	  add_gitblit_plugin;
+	fi
+	cd ${GERRIT_PWD}
     java -jar "${GERRIT_WAR}" init --batch --no-auto-start -d "${GERRIT_SITE}"
     #All git repositories must be removed in order to be recreated at the secondary init below.
     rm -rf "${GERRIT_SITE}/git"

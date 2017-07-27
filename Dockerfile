@@ -8,6 +8,11 @@ ENV GERRIT_PASSWORD gerrit
 ENV JENKINS_USERNAME jenkins
 ENV JENKINS_PASSWORD jenkins
 ENV JENKINS_INTEGRATION=true
+ENV GITBIT_PLUGIN_ENABLED=false
+
+# Add ant libraries to container
+COPY resources/ant /opt
+RUN ln -sf /opt/ant/bin/ant /bin/ant
 
 # Override entrypoint script
 USER root
