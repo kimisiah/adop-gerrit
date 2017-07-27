@@ -16,13 +16,13 @@ COPY resources/gerrit-entrypoint.sh ${GERRIT_HOME}/
 RUN chmod +x ${GERRIT_HOME}/gerrit*.sh
 
 # Add ant libraries to container
-COPY resources/ant /opt
-RUN chmod +x /opt/ant/bin/ant && \
-    ln -sf /opt/ant/bin/ant /bin/ant
+#COPY resources/ant /opt
+#RUN chmod +x /opt/ant/bin/ant && \
+#    ln -sf /opt/ant/bin/ant /bin/ant
 
 # Update Java
 RUN apt-get update && \
-    apt-get install openjdk-7-jdk -y
+    apt-get install openjdk-7-jdk ant -y
 
 # Add libraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
