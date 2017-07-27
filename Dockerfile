@@ -21,7 +21,8 @@ RUN chmod +x /opt/ant/bin/ant && \
     ln -sf /opt/ant/bin/ant /bin/ant
 
 # Update Java
-RUN apt-get install openjdk-7-jdk -y
+RUN apt-get update && \
+    apt-get install openjdk-7-jdk -y
 
 # Add libraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
