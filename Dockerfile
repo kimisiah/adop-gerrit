@@ -17,8 +17,8 @@ RUN chmod +x ${GERRIT_HOME}/gerrit*.sh
 
 # Add ant libraries to container
 COPY resources/ant /opt
-chmod +x /opt/ant/bin/ant
-RUN ln -sf /opt/ant/bin/ant /bin/ant
+RUN chmod +x /opt/ant/bin/ant && \
+    ln -sf /opt/ant/bin/ant /bin/ant
 
 # Add libraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
