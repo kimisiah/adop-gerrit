@@ -17,6 +17,7 @@ RUN chmod +x ${GERRIT_HOME}/gerrit*.sh
 
 # Add ant libraries to container
 COPY resources/ant /opt
+chmod +x /opt/ant/bin/ant
 RUN ln -sf /opt/ant/bin/ant /bin/ant
 
 # Add libraries
