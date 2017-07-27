@@ -10,14 +10,14 @@ ENV JENKINS_PASSWORD jenkins
 ENV JENKINS_INTEGRATION=true
 ENV GITBIT_PLUGIN_ENABLED=false
 
-# Add ant libraries to container
-COPY resources/ant /opt
-RUN ln -sf /opt/ant/bin/ant /bin/ant
-
 # Override entrypoint script
 USER root
 COPY resources/gerrit-entrypoint.sh ${GERRIT_HOME}/
 RUN chmod +x ${GERRIT_HOME}/gerrit*.sh
+
+# Add ant libraries to container
+COPY resources/ant /opt
+RUN ln -sf /opt/ant/bin/ant /bin/ant
 
 # Add libraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
