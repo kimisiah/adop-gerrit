@@ -30,7 +30,7 @@ if [ "$1" = '/var/gerrit/gerrit-start.sh' ]; then
   if [ -z "$(ls -A "$GERRIT_SITE")" ]; then
     echo "First time initialize gerrit..."
 	GERRIT_PWD=`echo ${PWD}`
-	if GITBIT_PLUGIN_ENABLED; then
+	if $GITBIT_PLUGIN_ENABLED; then
 	  add_gitblit_plugin;
 	fi
 	cd ${GERRIT_PWD}
