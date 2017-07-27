@@ -21,7 +21,7 @@ RUN chmod +x ${GERRIT_HOME}/gerrit*.sh
 #    ln -sf /opt/ant/bin/ant /bin/ant
 
 # Install ant and Update Java
-RUN apt-get install default-jdk ant
+RUN apt-get install jdk ant
 
 # Add libraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
