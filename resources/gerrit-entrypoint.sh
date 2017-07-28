@@ -21,6 +21,7 @@ function add_gitblit_plugin(){
   
   bazel build plugins/gitblit
   # Output jar is in: bazel-genfiles/plugins/gitblit/gitblit.jar
+  echo "Gitbit plugin installed to Gerrit..."
   
 }
 
