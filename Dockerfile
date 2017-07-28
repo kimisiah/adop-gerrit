@@ -1,4 +1,4 @@
-FROM openfrontier/gerrit:2.13.x
+FROM openfrontier/gerrit:2.13.8
 
 MAINTAINER Nick Griffin, <nicholas.griffin>
 
