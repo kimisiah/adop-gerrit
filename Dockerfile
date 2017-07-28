@@ -21,8 +21,8 @@ RUN chmod +x ${GERRIT_HOME}/gerrit*.sh
 #    ln -sf /opt/ant/bin/ant /bin/ant
 
 # Update Java
-RUN apt-get -qq update && \
-    apt-get -qq install openjdk-7-jdk ant -y
+#RUN apt-get -qq update && \
+#    apt-get -qq install openjdk-7-jdk ant -y
 
 # Add libraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
